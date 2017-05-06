@@ -37,15 +37,10 @@ public class AntiLinkCommand extends Command {
     public void execute(Guild guild, TextChannel channel, User invoker, Member member, Message message, String args) {
         boolean hasPerms = PermissionUtil.checkPermission(guild, guild.getMember(invoker), Permission.MANAGE_SERVER);
         GuildConfiguration setting = Settings.getSetting(guild);
-
         if (!hasPerms) return;
         Boolean needsUpdating = true;
-        boolean enabled;
-        if (Misc.isFuzzyTrue(args) || Misc.isFuzzyFalse(args)) {
+        if (Misc.isFuzzyFalse(args) || setting.antilink) {
             needsUpdating = false;
-        }
-        if (!needsUpdating) {
-
         }
         Settings.update(guild, "antilink", String.valueOf(needsUpdating));
         if (needsUpdating) {

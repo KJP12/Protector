@@ -5,13 +5,12 @@ import com.rethinkdb.RethinkDB;
 import com.rethinkdb.net.Connection;
 
 public class Rethink {
-
+    private static final String[] requiredTables = {"modlog", "antilink", "prefixes", "users"};
     public static Connection connection;
     public static final RethinkDB r = RethinkDB.r;
 
     public static void init() {
         connection = r.connection().hostname(Config.rethink_host).port(Config.rethink_port).db(Config.rethink_db_name).connect();
-        String[] requiredTables = {"modlog", "antilink", "prefixes"};
         for (String tbl : requiredTables) {
             createTable(tbl);
         }

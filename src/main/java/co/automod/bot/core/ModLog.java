@@ -1,5 +1,6 @@
 package co.automod.bot.core;
 
+import co.automod.bot.util.Text;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import net.dv8tion.jda.core.entities.*;
@@ -84,11 +85,10 @@ public class ModLog {
         DeletedMessage = getFromCache(e.getMessageId());
         if (DeletedMessage == null) return;
         String content = DeletedMessage.getStrippedContent();
-        if (!content.isEmpty() && !DeletedMessage.getAttachments().isEmpty()) {
-            content += String.join(", ", DeletedMessage.getAttachments().stream().map(Message.Attachment::getUrl).collect(Collectors.toList()));
-        } else if (content.isEmpty()) {
-            if (DeletedMessage.getAttachments().isEmpty()) return;
-            content = String.join(", ", DeletedMessage.getAttachments().stream().map(Message.Attachment::getUrl).collect(Collectors.toList()));
+        if (content.isEmpty()) {
+            return;
+        } else if (content.length() > 1550) {
+            content = "Message too long, created url " + Text.paste(content);
         }
         String time = getTime();
         Member author = DeletedMessage.getGuild().getMember(DeletedMessage.getAuthor());
@@ -115,7 +115,7 @@ public class ModLog {
         Member author = before.getGuild().getMember(before.getAuthor());
         String user = getUser(author);
         channel.sendMessage(String.format("\uD83D\uDCDD `[%s]` %s **%s's** message has been edited\n\nBefore: `%s`\n\nAfter: `%s`", time, e.getChannel().getAsMention(), user, before.getStrippedContent(), after.getStrippedContent())).queue(msg -> SelfCache.put(msg.getId(), Optional.of(msg.getRawContent())));
-
+        MessageCache.put(after.getId(), Optional.of(after));
     }
 
     @SubscribeEvent
@@ -156,6 +156,7 @@ public class ModLog {
 
     @SubscribeEvent
     public void onBan(GuildBanEvent e) {
+        UserData.onBan(e.getUser().getId());
         if (!isEnabled(e.getGuild())) {
             return;
         }

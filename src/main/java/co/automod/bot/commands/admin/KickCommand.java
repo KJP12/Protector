@@ -11,7 +11,7 @@ public class KickCommand extends ModAction {
     }
 
     @Override
-    boolean doModAction(Guild guild, Member member) {
+    boolean doModAction(Guild guild, Member member, String args) {
         guild.getController().kick(member).complete();
         return true;
     }

@@ -14,7 +14,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class AntiLink {
-    private static final Pattern discordURL = Pattern.compile("discord(?:(\\.(?:me|io|gg)|sites\\.com)\\/.{0,4}|app\\.com.{1,4}(?:invite|oauth2).{0,5}\\/)\\w+");
+    private static final Pattern discordURL = Pattern.compile("discord(?:(\\.(?:me|io|li|gg)|sites\\.com)\\/.{0,4}|app\\.com.{1,4}(?:invite|oauth2).{0,5}\\/)\\w+");
     private final Permission[] ignoredPerms = {Permission.MANAGE_SERVER, Permission.MANAGE_ROLES, Permission.BAN_MEMBERS, Permission.KICK_MEMBERS};
 
     private Boolean enabled(Guild guild) {
@@ -40,7 +40,10 @@ public class AntiLink {
         String cleanContent = cleanString(content);
         Matcher m = discordURL.matcher(cleanContent);
         if (m.find()) {
-            message.delete().queue(a -> message.getChannel().sendMessage(String.format("%s \u26D4 **Advertising is not allowed!**", message.getAuthor().getAsMention())).queue());
+            message.delete().queue(a -> {
+                UserData.onLink(message.getAuthor().getId());
+                message.getChannel().sendMessage(String.format("%s \u26D4 **Advertising is not allowed!**", message.getAuthor().getAsMention())).queue();
+            });
         }
     }
 

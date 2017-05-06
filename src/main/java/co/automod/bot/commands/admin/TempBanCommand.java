@@ -11,7 +11,7 @@ public class TempBanCommand extends ModAction {
     }
 
     @Override
-    boolean doModAction(Guild guild, Member member) {
+    boolean doModAction(Guild guild, Member member, String args) {
         guild.getController().ban(member, 7).complete();
         guild.getController().unban(member.getUser()).complete();
         return true;
@@ -24,7 +24,7 @@ public class TempBanCommand extends ModAction {
 
     @Override
     public String[] getAliases() {
-        return new String[]{"softban"};
+        return new String[]{"softban", "sb"};
     }
 
     @Override
