@@ -27,7 +27,7 @@ repositories {
 
 dependencies {
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.0.pr2'
-    compile group: 'net.dv8tion', name: 'JDA', version: '3.0.0_191'
+    compile group: 'net.dv8tion', name: 'JDA', version: '3.1.1_212'
     compile group: 'com.github.kaaz', name: 'configurationbuilder', version: 'afbc25a5d2'
     compile group: 'com.rethinkdb', name: 'rethinkdb-driver', version: '2.3.3'
 }
