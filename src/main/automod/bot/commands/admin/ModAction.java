@@ -18,12 +18,12 @@ public abstract class ModAction extends Command {
     @Override
     public void execute(Guild guild, TextChannel channel, User invoker, Member member, Message message, String args) {
         if (getRequiredPermission() != null) {
-            if (!PermissionUtil.checkPermission(guild, member, getRequiredPermission()) && !invoker.getId().equals(Config.owner_id)) {
-                channel.sendMessage(String.format(Emoji.REDX + " It seems like you don't have permission to %s! Make sure that you are able to **%s**", getTrigger(), getRequiredPermission().getName())).queue();
+            if (!PermissionUtil.checkPermission(member, getRequiredPermission()) && !invoker.getId().equals(Config.owner_id)) {
+                channel.sendMessage(Emoji.REDX + String.format(" It seems like you don't have permission to %s! Make sure that you are able to **%s**", getTrigger(), getRequiredPermission().getName())).queue();
                 return;
             }
-            if (!PermissionUtil.checkPermission(guild, guild.getSelfMember(), getRequiredPermission())) {
-                channel.sendMessage(Emoji.REDX + " **I am not allowed to %s members!** Make sure that I have permission to **%s**", getTrigger(), getRequiredPermission().getName()).queue();
+            if (!PermissionUtil.checkPermission(guild.getSelfMember(), getRequiredPermission())) {
+                channel.sendMessage(Emoji.REDX + String.format(" **I am not allowed to %s members!** Make sure that I have permission to **%s**", getTrigger(), getRequiredPermission().getName())).queue();
                 return;
             }
         }
@@ -45,13 +45,13 @@ public abstract class ModAction extends Command {
             return;
         }
         if (!PermissionUtil.canInteract(guild.getSelfMember(), guild.getMember(targetUser))) {
-            channel.sendMessage("I can't %s the user %s!", getTrigger(), targetUser.getName()).queue();
+            channel.sendMessage(String.format("I can't %s the user %s!", getTrigger(), targetUser.getName())).queue();
             return;
         }
         if (doModAction(guild, guild.getMember(targetUser), args)) {
             channel.sendMessage(String.format("%s **%s** is gone!", getTrigger().equals("kick") ? Emoji.KICK : Emoji.BAN, targetUser.getName() + "#" + targetUser.getDiscriminator())).queue();
             return;
         }
-        channel.sendMessage("Failed to %s %s. Sad isn't it?", getTrigger(), targetUser.getName());
+        channel.sendMessage(String.format("Failed to %s %s. Sad isn't it?", getTrigger(), targetUser.getName())).queue();
     }
 }

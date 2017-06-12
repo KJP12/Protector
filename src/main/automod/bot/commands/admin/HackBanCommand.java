@@ -37,7 +37,7 @@ public class HackBanCommand extends Command {
             return;
         }
         if (!PermissionUtil.checkPermission(guild, guild.getSelfMember(), Permission.BAN_MEMBERS)) {
-            channel.sendMessage(Emoji.REDX + " **I am not allowed to %s members!** Make sure that I have permission to **%s**", getTrigger(), Permission.BAN_MEMBERS.getName()).queue();
+            channel.sendMessage(String.format(Emoji.REDX + " **I am not allowed to %s members!** Make sure that I have permission to **%s**", getTrigger(), Permission.BAN_MEMBERS.getName())).queue();
             return;
         }
         String[] parsedArgs = args.split("\\s+");
