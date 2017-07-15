@@ -36,7 +36,7 @@ public class ServerPrefixCommand extends Command {
 
     @Override
     public void execute(Guild guild, TextChannel channel, User invoker, Member member, Message message, String args) {
-        boolean hasPerms = PermissionUtil.checkPermission(guild, guild.getMember(invoker), Permission.MANAGE_SERVER);
+        boolean hasPerms = PermissionUtil.checkPermission(member, Permission.MANAGE_SERVER);
         if (!hasPerms) return;
         if (args.isEmpty()) {
             channel.sendMessage(new EmbedBuilder().setColor(Color.red).setDescription(String.format("**\u274C Missing args**\n\n%sserverprefix [Prefix]", CommandListener.getPrefix(guild))).build()).queue();

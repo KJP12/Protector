@@ -74,7 +74,7 @@ public class ServerInfoCommand extends Command {
         String SecurityEnabled = guild.getRequiredMFALevel().name().equals("TWO_FACTOR_AUTH") ? "Enabled" : "Disabled";
         String bans;
         try {
-            bans = String.valueOf(guild.getController().getBans().complete().size());
+            bans = String.valueOf(guild.getBans().complete().size());
         } catch (Exception e) {
             e.printStackTrace();
             bans = "Unknown";

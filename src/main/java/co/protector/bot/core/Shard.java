@@ -11,13 +11,13 @@ import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import net.dv8tion.jda.core.hooks.AnnotatedEventManager;
-import net.dv8tion.jda.core.hooks.SubscribeEvent;
+import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
 import javax.security.auth.login.LoginException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class Shard {
+public class Shard extends ListenerAdapter {
     private final ShardContainer container;
     private final CommandListener commandListener;
     private final ExecutorService commandExecutor;
@@ -42,7 +42,6 @@ public class Shard {
         }
         try {
             jda = builder.buildBlocking();
-            jda.setEventManager(new AnnotatedEventManager());
             jda.addEventListener(new ModLog());
             jda.addEventListener(new AntiLink());
             jda.addEventListener(this);
@@ -56,7 +55,7 @@ public class Shard {
         return jda;
     }
 
-    @SubscribeEvent
+    @Override
     public void onGuildMessageReceived(GuildMessageReceivedEvent e) {
         if (e.getAuthor().isBot()) {
             return;

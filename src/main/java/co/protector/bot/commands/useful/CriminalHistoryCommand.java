@@ -39,11 +39,14 @@ public class CriminalHistoryCommand extends Command {
         } else {
             checking = invoker;
         }
-        long bans = UserData.getBans(checking.getId());
-        long links = UserData.getLinks(checking.getId());
+        int bans = UserData.getBans(checking.getId());
+        int links = UserData.getLinks(checking.getId());
         String user = checking.getName() + "#" + checking.getDiscriminator();
-        channel.sendMessage(new EmbedBuilder().setColor(Color.ORANGE).setDescription("__**Criminal History for " + user +
-                "**__\n\n\n**User was banned** __**" + bans + "** __**times**\n\n" +
-                "**Sent** __**" + links + "**__ " + "**discord links** (And I deleted them)").build()).queue();
+        channel.sendMessage(new EmbedBuilder()
+                .setColor(Color.ORANGE)
+                .setDescription("__**Criminal History for " + user +
+                        "**__\n\n\n**User was banned** __**" + bans + "** __**times**\n\n" +
+                        "**Sent** __**" + links + "**__ " + "**discord links** (And I deleted them)")
+                .build()).queue();
     }
 }

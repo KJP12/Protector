@@ -6,14 +6,14 @@ import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageUpdateEvent;
-import net.dv8tion.jda.core.hooks.SubscribeEvent;
+import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import net.dv8tion.jda.core.utils.PermissionUtil;
 
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class AntiLink {
+public class AntiLink extends ListenerAdapter {
     private static final Pattern discordURL = Pattern.compile("discord(?:(\\.(?:me|io|li|gg)|sites\\.com|list\\.me)\\/.{0,4}|app\\.com.{1,4}(?:invite|oauth2).{0,5}\\/)\\w+");
     private final Permission[] ignoredPerms = {Permission.MANAGE_SERVER, Permission.MANAGE_ROLES, Permission.BAN_MEMBERS, Permission.KICK_MEMBERS};
 
@@ -28,7 +28,7 @@ public class AntiLink {
     }
 
     private boolean ignoreMember(Member member) {
-        return Arrays.stream(ignoredPerms).anyMatch(perm -> PermissionUtil.checkPermission(member.getGuild(), member, perm));
+        return Arrays.stream(ignoredPerms).anyMatch(perm -> PermissionUtil.checkPermission(member, perm));
     }
 
     private void handleMessage(Message message, Member member) {
@@ -47,13 +47,13 @@ public class AntiLink {
         }
     }
 
-    @SubscribeEvent
-    public void handleEdit(GuildMessageUpdateEvent e) {
+    @Override
+    public void onGuildMessageUpdate(GuildMessageUpdateEvent e) {
         handleMessage(e.getMessage(), e.getMember());
     }
 
-    @SubscribeEvent
-    public void handleMessage(GuildMessageReceivedEvent e) {
+    @Override
+    public void onGuildMessageReceived(GuildMessageReceivedEvent e) {
         handleMessage(e.getMessage(), e.getMember());
     }
 }

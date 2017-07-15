@@ -1,6 +1,5 @@
 package co.protector.bot;
 
-import co.protector.bot.core.Rethink;
 import co.protector.bot.core.ShardContainer;
 import com.kaaz.configuration.ConfigurationBuilder;
 
@@ -11,7 +10,6 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         new ConfigurationBuilder(Config.class, new File("bot.cfg")).build();
-        Rethink.init();
         bot = new ShardContainer();
     }
 

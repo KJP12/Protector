@@ -10,7 +10,7 @@ import net.dv8tion.jda.core.events.message.guild.GuildMessageDeleteEvent;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.core.events.message.guild.GuildMessageUpdateEvent;
 import net.dv8tion.jda.core.events.user.UserNameUpdateEvent;
-import net.dv8tion.jda.core.hooks.SubscribeEvent;
+import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -22,13 +22,13 @@ import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
-public class ModLog {
+public class ModLog extends ListenerAdapter {
     private final DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
     private final Cache<String, Optional<Message>> MessageCache = CacheBuilder.newBuilder().concurrencyLevel(10).maximumSize(2500).build();
     private final Cache<String, Optional<String>> SelfCache = CacheBuilder.newBuilder().concurrencyLevel(10).maximumSize(2500).build();
 
-    @SubscribeEvent
-    public void onMessage(GuildMessageReceivedEvent e) {
+    @Override
+    public void onGuildMessageReceived(GuildMessageReceivedEvent e) {
         Message msg = e.getMessage();
         if (msg != null) {
             MessageCache.put(msg.getId(), Optional.of(msg));
@@ -61,8 +61,8 @@ public class ModLog {
         }
     }
 
-    @SubscribeEvent
-    public void onDelete(GuildMessageDeleteEvent e) {
+    @Override
+    public void onGuildMessageDelete(GuildMessageDeleteEvent e) {
         if (!isEnabled(e.getGuild())) {
             return;
         }
@@ -96,8 +96,8 @@ public class ModLog {
         channel.sendMessage(String.format("\uD83D\uDCDD `[%s]` %s **%s's** message has been deleted `%s`", time, e.getChannel().getAsMention(), user, content)).queue(msg -> SelfCache.put(msg.getId(), Optional.of(msg.getRawContent())));
     }
 
-    @SubscribeEvent
-    public void onEdit(GuildMessageUpdateEvent e) {
+    @Override
+    public void onGuildMessageUpdate(GuildMessageUpdateEvent e) {
         if (!isEnabled(e.getGuild())) {
             return;
         }
@@ -118,8 +118,8 @@ public class ModLog {
         MessageCache.put(after.getId(), Optional.of(after));
     }
 
-    @SubscribeEvent
-    public void onLeave(GuildMemberLeaveEvent e) {
+    @Override
+    public void onGuildMemberLeave(GuildMemberLeaveEvent e) {
         if (!isEnabled(e.getGuild())) {
             return;
         }
@@ -135,8 +135,8 @@ public class ModLog {
         channel.sendMessage(String.format("\u274C `[%s]` **%s** has left the server or was kicked. Total members `%s`", time, user, e.getGuild().getMembers().size())).queue(msg -> SelfCache.put(msg.getId(), Optional.of(msg.getRawContent())));
     }
 
-    @SubscribeEvent
-    public void onJoin(GuildMemberJoinEvent e) {
+    @Override
+    public void onGuildMemberJoin(GuildMemberJoinEvent e) {
         if (!isEnabled(e.getGuild())) {
             return;
         }
@@ -154,8 +154,8 @@ public class ModLog {
         channel.sendMessage(String.format("\u2705 `[%s]` **%s** joined the server. %s Total members `%s`", time, user, created, e.getGuild().getMembers().size())).queue(msg -> SelfCache.put(msg.getId(), Optional.of(msg.getRawContent())));
     }
 
-    @SubscribeEvent
-    public void onBan(GuildBanEvent e) {
+    @Override
+    public void onGuildBan(GuildBanEvent e) {
         UserData.onBan(e.getUser().getId());
         if (!isEnabled(e.getGuild())) {
             return;
@@ -173,8 +173,8 @@ public class ModLog {
 
     }
 
-    @SubscribeEvent
-    public void onNickChange(GuildMemberNickChangeEvent e) {
+    @Override
+    public void onGuildMemberNickChange(GuildMemberNickChangeEvent e) {
         if (!isEnabled(e.getGuild())) {
             return;
         }
@@ -190,8 +190,8 @@ public class ModLog {
         channel.sendMessage(String.format("\uD83C\uDFF7 `[%s]` **%s** Changed their nickname `%s` ➥ `%s`", time, user, e.getPrevNick() == null ? e.getMember().getUser().getName() : e.getPrevNick(), e.getNewNick() == null ? e.getMember().getUser().getName() : e.getNewNick())).queue(msg -> SelfCache.put(msg.getId(), Optional.of(msg.getRawContent())));
     }
 
-    @SubscribeEvent
-    public void roleAdd(GuildMemberRoleAddEvent e) {
+    @Override
+    public void onGuildMemberRoleAdd(GuildMemberRoleAddEvent e) {
         if (!isEnabled(e.getGuild())) {
             return;
         }
@@ -208,8 +208,8 @@ public class ModLog {
         channel.sendMessage(String.format("\u2611 `[%s]` a role has been added to **%s** - `%s`", time, user, AddedRoles)).queue(msg -> SelfCache.put(msg.getId(), Optional.of(msg.getRawContent())));
     }
 
-    @SubscribeEvent
-    public void roleRemove(GuildMemberRoleRemoveEvent e) {
+    @Override
+    public void onGuildMemberRoleRemove(GuildMemberRoleRemoveEvent e) {
         if (!isEnabled(e.getGuild())) {
             return;
         }
@@ -226,8 +226,8 @@ public class ModLog {
         channel.sendMessage(String.format("\u274C `[%s]` a role has been removed from **%s** - `%s`", time, user, AddedRoles)).queue(msg -> SelfCache.put(msg.getId(), Optional.of(msg.getRawContent())));
     }
 
-    @SubscribeEvent
-    public void usernameUpdate(UserNameUpdateEvent e) {
+    @Override
+    public void onUserNameUpdate(UserNameUpdateEvent e) {
         String before = e.getOldName() + "#" + e.getOldDiscriminator();
         String after = e.getUser().getName() + "#" + e.getUser().getDiscriminator();
         List<Guild> userGuilds = e.getJDA().getGuilds().stream().filter(g -> g.getMembers().stream().map(Member::getUser).collect(Collectors.toList()).contains(e.getUser())).collect(Collectors.toList());

@@ -12,24 +12,22 @@ mainClassName = "co.protector.bot.Main"
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-sourceSets {
-    main {
-        java {
-            srcDirs = ['src/main']
-        }
-    }
-}
-
 repositories {
     jcenter()
     maven { url 'https://jitpack.io' }
 }
 
 dependencies {
-    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.0.pr2'
-    compile group: 'net.dv8tion', name: 'JDA', version: '3.1.1_217'
+    //JDA
+    compile group: 'net.dv8tion', name: 'JDA', version: '3.1.1_224'
+    //Configuration builder
     compile group: 'com.github.kaaz', name: 'configurationbuilder', version: 'afbc25a5d2'
-    compile group: 'com.rethinkdb', name: 'rethinkdb-driver', version: '2.3.3'
+    //Unirest
+    compile group: 'com.mashape.unirest', name: 'unirest-java', version: '1.4.9'
+    //MongoDB
+    compile group: 'org.mongodb', name: 'mongodb-driver', version: '3.4.2'
+    //Logback
+    compile group: 'ch.qos.logback', name: 'logback-core', version: '1.2.3'
 }
 
 task wrapper(type: Wrapper) {

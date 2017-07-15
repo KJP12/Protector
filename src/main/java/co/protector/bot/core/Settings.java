@@ -1,17 +1,15 @@
 package co.protector.bot.core;
 
-import co.protector.bot.core.settings.types.TextChannelSettingType;
-import co.protector.bot.data.StringValue;
 import co.protector.bot.ExitStatus;
 import co.protector.bot.Main;
 import co.protector.bot.core.settings.GuildSetting;
 import co.protector.bot.core.settings.IGuildSettingType;
 import co.protector.bot.core.settings.types.BooleanSettingType;
 import co.protector.bot.core.settings.types.StringLengthSettingType;
-import co.protector.bot.data.GuildBool;
+import co.protector.bot.core.settings.types.TextChannelSettingType;
 import co.protector.bot.util.Misc;
-import com.rethinkdb.gen.exc.ReqlNonExistenceError;
 import net.dv8tion.jda.core.entities.Guild;
+import org.bson.Document;
 import org.reflections.Reflections;
 
 import java.lang.reflect.Field;
@@ -67,9 +65,8 @@ public class Settings {
             try {
                 Field field = gc.getClass().getField(varname);
                 Object value;
-                try {
-                    value = Rethink.getConfigField(guild.getId(), setting.dbTable(), setting.dbField());
-                } catch (ReqlNonExistenceError e) {
+                value = Database.getDocument(guild.getId(), setting.dbTable()).get("value");
+                if (value == null) {
                     value = setting.getDefault();
                 }
                 if (field.get(gc) instanceof Boolean) {
@@ -108,20 +105,18 @@ public class Settings {
 
     public static boolean update(Guild guild, String config, String value) {
         GuildSetting cfg = settings.get(config);
-        Object data;
         IGuildSettingType settingType = cfg.getSettingTypeObject();
         if (!cfg.isValidValue(guild, value)) {
             return false;
         }
         String writeValue = cfg.getValue(guild, value);
         if (settingType instanceof BooleanSettingType) {
-            data = new GuildBool(guild.getId(), Misc.isFuzzyTrue(writeValue));
+            Database.saveConfigField(cfg.dbTable(), new Document().append("value", Misc.isFuzzyTrue(writeValue)), guild.getId());
         } else if (settingType instanceof StringLengthSettingType || settingType instanceof TextChannelSettingType) {
-            data = new StringValue(guild.getId(), writeValue);
+            Database.saveConfigField(cfg.dbTable(), new Document().append("value", writeValue), guild.getId());
         } else {
             return false;
         }
-        Rethink.saveConfigField(cfg.dbTable(), data);
         clearCache(guild);
         return true;
     }

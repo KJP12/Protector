@@ -35,7 +35,7 @@ public class AntiLinkCommand extends Command {
 
     @Override
     public void execute(Guild guild, TextChannel channel, User invoker, Member member, Message message, String args) {
-        boolean hasPerms = PermissionUtil.checkPermission(guild, guild.getMember(invoker), Permission.MANAGE_SERVER);
+        boolean hasPerms = PermissionUtil.checkPermission(member, Permission.MANAGE_SERVER);
         GuildConfiguration setting = Settings.getSetting(guild);
         if (!hasPerms) return;
         Boolean needsUpdating = true;
