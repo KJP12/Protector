@@ -6,6 +6,10 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.UpdateOptions;
 import org.bson.Document;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.mongodb.client.model.Filters.eq;
 
 public class Database {
@@ -25,6 +29,28 @@ public class Database {
     }
 
     public static String getMutedRole(String id) {
-        return Database.getDocument(id, "mute").getString("role");
+        return getDocument(id, "mute").getString("role");
     }
+
+    @SuppressWarnings("unchecked")
+    public static List<String> getMutedUsers(String id) {
+        List<String> users = (List<String>) getDocument(id, "muted").get("users");
+        if(users == null) return new ArrayList<>();
+        return users;
+    }
+
+    public static void addMutedUser(String id, String user) {
+        List<String> muted = getMutedUsers(id);
+        muted.add(user);
+        saveConfigField("muted", new Document()
+        .append("users", muted), id);
+    }
+
+    public static void removeMutedUser(String id, String user) {
+        List<String> muted = getMutedUsers(id);
+        muted.remove(user);
+        saveConfigField("muted", new Document()
+                .append("users", muted), id);
+    }
+
 }

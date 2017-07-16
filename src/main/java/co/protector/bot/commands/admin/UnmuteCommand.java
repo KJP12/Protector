@@ -3,6 +3,7 @@ package co.protector.bot.commands.admin;
 import co.protector.bot.core.Database;
 import co.protector.bot.core.listener.command.Command;
 import co.protector.bot.util.Emoji;
+import co.protector.bot.util.Misc;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.utils.PermissionUtil;
@@ -55,13 +56,17 @@ public class UnmuteCommand extends Command {
     @Override
     public void execute(Message trigger, String args) {
         if (!checks(trigger)) return;
-        List<User> mentions = trigger.getMentionedUsers();
-        if (mentions.isEmpty()) {
-            trigger.getChannel().sendMessage(Emoji.REDX + " **You must mention a user you want to unmute**").queue();
+        Guild guild = trigger.getGuild();
+        if (args.isEmpty()) {
+            trigger.getChannel().sendMessage(Emoji.X + " **Who exactly should I unmute?**").queue();
             return;
         }
-        Guild guild = trigger.getGuild();
-        Member target = guild.getMember(mentions.get(0));
+        User user = Misc.findUser(trigger.getTextChannel(), args);
+        if(user == null) {
+            trigger.getChannel().sendMessage(Emoji.X + " **Could not find user**").queue();
+            return;
+        }
+        Member target = guild.getMember(user);
         String id = Database.getMutedRole(guild.getId());
         if (id == null) {
             trigger.getChannel().sendMessage(Emoji.WARN +
@@ -83,6 +88,7 @@ public class UnmuteCommand extends Command {
             return;
         }
         guild.getController().removeRolesFromMember(target, role).queue();
-        trigger.getChannel().sendMessage(Emoji.GREEN_TICK + " **Unmuted** `" + target.getEffectiveName() + "`").queue();
+        Database.removeMutedUser(guild.getId(), target.getUser().getId());
+        trigger.getChannel().sendMessage(Emoji.GREEN_TICK + " **Unmuted** `" + target.getUser().getName() + "#" + target.getUser().getDiscriminator() + "`").queue();
     }
 }

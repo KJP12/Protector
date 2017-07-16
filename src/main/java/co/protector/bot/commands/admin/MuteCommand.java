@@ -3,6 +3,7 @@ package co.protector.bot.commands.admin;
 import co.protector.bot.core.Database;
 import co.protector.bot.core.listener.command.Command;
 import co.protector.bot.util.Emoji;
+import co.protector.bot.util.Misc;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.utils.PermissionUtil;
@@ -42,9 +43,13 @@ public class MuteCommand extends Command {
                 PermissionUtil.canInteract(author, author.getGuild().getSelfMember());
     }
 
-    private boolean checks(Message trigger) {
+    private boolean checks(Message trigger, Member muting) {
         if (!PermissionUtil.checkPermission(trigger.getMember(), Permission.KICK_MEMBERS)) {
             trigger.getChannel().sendMessage(Emoji.REDX + " **You require the `Kick Members` permission in order to mute**").queue();
+            return false;
+        }
+        if(!PermissionUtil.canInteract(trigger.getMember(), muting)) {
+            trigger.getChannel().sendMessage(Emoji.REDX + " **You are not allowed to mute a user with a higher or equal role**").queue();
             return false;
         }
         if (!canManageRole(trigger.getMember())) {
@@ -56,18 +61,23 @@ public class MuteCommand extends Command {
 
     @Override
     public void execute(Message trigger, String args) {
-        List<User> mentions = trigger.getMentionedUsers();
-        if (mentions.isEmpty()) {
-            trigger.getChannel().sendMessage(Emoji.REDX + " **You must mention a user you want to mute**").queue();
+        Guild guild = trigger.getGuild();
+        if (args.isEmpty()) {
+            trigger.getChannel().sendMessage(Emoji.X + " **Who exactly should I mute?**").queue();
             return;
         }
-        Guild guild = trigger.getGuild();
-        Member muting = guild.getMember(mentions.get(0));
+        User user = Misc.findUser(trigger.getTextChannel(), args);
+        if(user == null) {
+            trigger.getChannel().sendMessage(Emoji.X + " **Could not find user**").queue();
+            return;
+        }
+        Member muting = guild.getMember(user);
+        if (!checks(trigger, muting)) return;
         if(muting.getUser().getId().equals(trigger.getJDA().getSelfUser().getId())) {
             trigger.getChannel().sendMessage(Emoji.EYES + " **Thats pretty rude!**").queue();
             return;
         }
-        if (!checks(trigger)) return;
+
         String id = Database.getMutedRole(guild.getId());
         if (muting.getRoles().stream().anyMatch(role -> role.getId().equals(id))) {
             trigger.getChannel().sendMessage(Emoji.WARN +
@@ -92,13 +102,16 @@ public class MuteCommand extends Command {
 
     private void assignMutedRole(Role role, Guild guild, MessageChannel channel, Member member) {
         guild.getController().addRolesToMember(member, role).queue();
-        channel.sendMessage(Emoji.GREEN_TICK + " **Muted** `" + member.getEffectiveName() + "`").queue();
+        Database.addMutedUser(guild.getId(), member.getUser().getId());
+        channel.sendMessage(Emoji.GREEN_TICK +
+                " **Muted** `" + member.getUser().getName() + "#" + member.getUser().getDiscriminator() + "`").queue();
     }
 
     private void setMutedRole(String id, String guildid) {
         Database.saveConfigField("mute",
                 new Document().append("role", id), guildid);
     }
+
 
     private Role createRole(Guild guild) {
         Role role = guild.getController().createRole().setName("Muted").complete();
