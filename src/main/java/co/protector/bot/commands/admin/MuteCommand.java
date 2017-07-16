@@ -75,7 +75,7 @@ public class MuteCommand extends Command {
             return;
         }
         if (id == null) {
-            trigger.getChannel().sendMessage("**Muted role not found, configuring.**").queue();
+            trigger.getChannel().sendMessage(Emoji.WARN + " **Muted role not found, configuring.**").queue();
             Role role = createRole(guild);
             setMutedRole(role.getId(), guild.getId());
             assignMutedRole(role, guild, trigger.getChannel(), muting);

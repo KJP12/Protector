@@ -43,6 +43,7 @@ public class Shard extends ListenerAdapter {
             jda = builder.buildBlocking();
             jda.addEventListener(new ModLog());
             jda.addEventListener(new AntiLink());
+            jda.addEventListener(new MuteAvoidance());
             jda.addEventListener(this);
         } catch (LoginException e) {
             e.printStackTrace();
