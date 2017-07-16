@@ -20,7 +20,7 @@ public class ShardContainer {
 
     private void startShards() {
         for (int i = 0; i < shards.length; i++) {
-            shards[i] = new Shard(this,i, shards.length);
+            shards[i] = new Shard(this, i, shards.length);
             boolean success = false;
             while (!success) {
                 try {

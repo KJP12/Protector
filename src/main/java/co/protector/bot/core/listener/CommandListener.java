@@ -1,10 +1,10 @@
 package co.protector.bot.core.listener;
 
-import co.protector.bot.core.Settings;
 import co.protector.bot.Config;
 import co.protector.bot.ExitStatus;
 import co.protector.bot.Main;
 import co.protector.bot.commands.CommandCategory;
+import co.protector.bot.core.Settings;
 import co.protector.bot.core.listener.command.Command;
 import net.dv8tion.jda.core.entities.*;
 import org.reflections.Reflections;
@@ -105,7 +105,7 @@ public class CommandListener {
         if (command == null) {
             return false;
         }
-        command.execute(guild, channel, author, member, message, split.length == 1 ? "" : split[1]);
+        command.execute(message, split.length == 1 ? "" : split[1]);
         return true;
     }
 }

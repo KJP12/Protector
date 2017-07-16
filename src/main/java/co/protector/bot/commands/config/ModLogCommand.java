@@ -1,11 +1,14 @@
 package co.protector.bot.commands.config;
 
 import co.protector.bot.core.Settings;
-import co.protector.bot.util.Misc;
 import co.protector.bot.core.listener.command.Command;
 import co.protector.bot.settings.ModLogChannelSetting;
+import co.protector.bot.util.Misc;
 import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.*;
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.utils.PermissionUtil;
 
 import java.util.List;
@@ -36,7 +39,10 @@ public class ModLogCommand extends Command {
     }
 
     @Override
-    public void execute(Guild guild, TextChannel channel, User invoker, Member member, Message message, String args) {
+    public void execute(Message trigger, String args) {
+        Guild guild = trigger.getGuild();
+        TextChannel channel = trigger.getTextChannel();
+        Member member = trigger.getMember();
         boolean hasPerms = PermissionUtil.checkPermission(member, Permission.MANAGE_SERVER);
         if (!hasPerms) return;
         if (args.isEmpty()) {
@@ -52,7 +58,7 @@ public class ModLogCommand extends Command {
             channel.sendMessage("\u2705 **Disabled modlog**").queue();
             return;
         }
-        List<TextChannel> ments = message.getMentionedChannels();
+        List<TextChannel> ments = trigger.getMentionedChannels();
         if (!Settings.update(guild, ModLogChannelSetting.class, args)) {
             channel.sendMessage("\u274C **You must mention a channel you want the modlog to be in**").queue();
             return;

@@ -6,7 +6,9 @@ import co.protector.bot.core.listener.command.Command;
 import co.protector.bot.util.Emoji;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.*;
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.utils.PermissionUtil;
 
 import java.util.HashMap;
@@ -40,17 +42,19 @@ public class HelpCommand extends Command {
     }
 
     @Override
-    public void execute(Guild guild, TextChannel channel, User invoker, Member member, Message message, String args) {
+    public void execute(Message trigger, String args) {
         if (fullHelpText == null) {
             createHelpCache();
         }
-        invoker.openPrivateChannel().queue(privateChannel -> privateChannel.sendMessage(new EmbedBuilder()
+        Guild guild = trigger.getGuild();
+        TextChannel channel = trigger.getTextChannel();
+        trigger.getAuthor().openPrivateChannel().queue(privateChannel -> privateChannel.sendMessage(new EmbedBuilder()
                 .setAuthor("AutoMod Commands!", null, channel.getJDA().getSelfUser().getAvatarUrl())
                 .setDescription(String.format(fullHelpText, CommandListener.getPrefix(guild)))
                 .setFooter("AutoMod ready at your command!", null)
                 .build()).queue());
         if (PermissionUtil.checkPermission(channel, guild.getSelfMember(), Permission.MESSAGE_ADD_REACTION)) {
-            message.addReaction(Emoji.MAILBOX_WITH_MAIL).queue();
+            trigger.addReaction(Emoji.MAILBOX_WITH_MAIL).queue();
         }
     }
 

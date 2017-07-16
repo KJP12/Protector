@@ -1,7 +1,7 @@
 package co.protector.bot.core.listener.command;
 
 import co.protector.bot.commands.CommandCategory;
-import net.dv8tion.jda.core.entities.*;
+import net.dv8tion.jda.core.entities.Message;
 
 public abstract class Command {
     private CommandCategory category = CommandCategory.UNKNOWN;
@@ -48,13 +48,10 @@ public abstract class Command {
     /**
      * run the command
      *
-     * @param guild   the guild is was executed in
-     * @param channel the channel
-     * @param invoker the user who invoked
-     * @param message the message
+     * @param trigger the message that triggered the command
      * @param args    arguments
      */
-    public abstract void execute(Guild guild, TextChannel channel, User invoker, Member member, Message message, String args);
+    public abstract void execute(Message trigger, String args);
 
     /**
      * the category of the command (based on packagename)

@@ -9,4 +9,6 @@ public class Emoji {
     public static final String EYES = "\uD83D\uDC40";
     public static final String KICK = "\uD83D\uDC62";
     public static final String BAN = "\uD83D\uDD28";
+    public static final String WARN = "\u26A0";
+    public static final String GREEN_TICK = "\u2705";
 }

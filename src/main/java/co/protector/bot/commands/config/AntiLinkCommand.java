@@ -1,11 +1,13 @@
 package co.protector.bot.commands.config;
 
+import co.protector.bot.core.GuildConfiguration;
 import co.protector.bot.core.Settings;
 import co.protector.bot.core.listener.command.Command;
 import co.protector.bot.util.Misc;
-import co.protector.bot.core.GuildConfiguration;
 import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.*;
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.utils.PermissionUtil;
 
 public class AntiLinkCommand extends Command {
@@ -34,8 +36,10 @@ public class AntiLinkCommand extends Command {
 
 
     @Override
-    public void execute(Guild guild, TextChannel channel, User invoker, Member member, Message message, String args) {
-        boolean hasPerms = PermissionUtil.checkPermission(member, Permission.MANAGE_SERVER);
+    public void execute(Message trigger, String args) {
+        Guild guild = trigger.getGuild();
+        MessageChannel channel = trigger.getChannel();
+        boolean hasPerms = PermissionUtil.checkPermission(trigger.getMember(), Permission.MANAGE_SERVER);
         GuildConfiguration setting = Settings.getSetting(guild);
         if (!hasPerms) return;
         Boolean needsUpdating = true;

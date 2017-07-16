@@ -3,7 +3,10 @@ package co.protector.bot.commands.useful;
 import co.protector.bot.core.listener.command.Command;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.OnlineStatus;
-import net.dv8tion.jda.core.entities.*;
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.TextChannel;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -46,9 +49,11 @@ public class ServerInfoCommand extends Command {
     }
 
     @Override
-    public void execute(Guild guild, TextChannel channel, User invoker, Member member, Message message, String args) {
+    public void execute(Message trigger, String args) {
+        Guild guild = trigger.getGuild();
+        Member member = trigger.getMember();
         Member guildOwner = guild.getOwner();
-        String user = member.getEffectiveName() + "#" + invoker.getDiscriminator();
+        String user = member.getEffectiveName() + "#" + trigger.getAuthor().getDiscriminator();
         String owner = guildOwner.getEffectiveName() + "#" + guildOwner.getUser().getDiscriminator();
         String region = guild.getRegion().getName();
         List<TextChannel> channelList = guild.getTextChannels();
@@ -94,7 +99,7 @@ public class ServerInfoCommand extends Command {
                 .addField("Verification Level", verificationLevel, true)
                 .addField("Bans", bans, true)
                 .addField("Owner", String.format("[%s](%s)", owner, guildOwner.getUser().getAvatarUrl()), true);
-        channel.sendMessage(embed.build()).queue();
+        trigger.getChannel().sendMessage(embed.build()).queue();
 
     }
 }

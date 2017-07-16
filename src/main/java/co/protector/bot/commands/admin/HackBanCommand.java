@@ -3,7 +3,9 @@ package co.protector.bot.commands.admin;
 import co.protector.bot.core.listener.command.Command;
 import co.protector.bot.util.Emoji;
 import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.*;
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.utils.PermissionUtil;
 
 public class HackBanCommand extends Command {
@@ -29,9 +31,10 @@ public class HackBanCommand extends Command {
 
 
     @Override
-    public void execute(Guild guild, TextChannel channel, User invoker, Member member, Message message, String args) {
-
-        boolean hasPerms = PermissionUtil.checkPermission(member, Permission.BAN_MEMBERS);
+    public void execute(Message trigger, String args) {
+        TextChannel channel = trigger.getTextChannel();
+        Guild guild = trigger.getGuild();
+        boolean hasPerms = PermissionUtil.checkPermission(trigger.getMember(), Permission.BAN_MEMBERS);
         if (!hasPerms) {
             channel.sendMessage(String.format(Emoji.REDX + " It seems like you don't have permission to %s! Make sure that you are able to **%s**", getTrigger(), Permission.BAN_MEMBERS.getName())).queue();
             return;
@@ -45,7 +48,7 @@ public class HackBanCommand extends Command {
             channel.sendMessage("I'm not going to ban myself..!").queue();
             return;
         }
-        if (parsedArgs[0].equals(invoker.getId())) {
+        if (parsedArgs[0].equals(trigger.getAuthor().getId())) {
             channel.sendMessage("Don't be so hard on yourself! \uD83D\uDC96 \u2728").queue();
             return;
         }

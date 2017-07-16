@@ -2,7 +2,8 @@ package co.protector.bot.commands.info;
 
 import co.protector.bot.core.listener.command.Command;
 import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.*;
+import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.MessageChannel;
 
 import java.awt.*;
 
@@ -29,7 +30,8 @@ public class PingCommand extends Command {
 
 
     @Override
-    public void execute(Guild guild, TextChannel channel, User invoker, Member member, Message message, String args) {
+    public void execute(Message trigger, String args) {
+        MessageChannel channel = trigger.getChannel();
         long startTime = System.currentTimeMillis();
         channel.sendTyping().complete();
         long stopTime = System.currentTimeMillis();

@@ -2,7 +2,7 @@ package co.protector.bot.commands.info;
 
 import co.protector.bot.core.listener.command.Command;
 import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.*;
+import net.dv8tion.jda.core.entities.Message;
 
 public class InviteCommand extends Command {
     private static final String embedDescription = "[Add me](https://discord.io/protector)\n[Official Discord](https://discord.io/botz)\n[Github](https://github.com/repulser/automod)\n";
@@ -29,8 +29,8 @@ public class InviteCommand extends Command {
 
 
     @Override
-    public void execute(Guild guild, TextChannel channel, User invoker, Member member, Message message, String args) {
-        channel.sendMessage(new EmbedBuilder()
+    public void execute(Message trigger, String args) {
+        trigger.getChannel().sendMessage(new EmbedBuilder()
                 .setDescription(embedDescription).build()).queue();
 
     }

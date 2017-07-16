@@ -7,7 +7,8 @@ import co.protector.bot.settings.PrefixSetting;
 import co.protector.bot.util.Emoji;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.Permission;
-import net.dv8tion.jda.core.entities.*;
+import net.dv8tion.jda.core.entities.Message;
+import net.dv8tion.jda.core.entities.TextChannel;
 import net.dv8tion.jda.core.utils.PermissionUtil;
 
 import java.awt.*;
@@ -35,15 +36,16 @@ public class ServerPrefixCommand extends Command {
 
 
     @Override
-    public void execute(Guild guild, TextChannel channel, User invoker, Member member, Message message, String args) {
-        boolean hasPerms = PermissionUtil.checkPermission(member, Permission.MANAGE_SERVER);
+    public void execute(Message trigger, String args) {
+        TextChannel channel = trigger.getTextChannel();
+        boolean hasPerms = PermissionUtil.checkPermission(trigger.getMember(), Permission.MANAGE_SERVER);
         if (!hasPerms) return;
         if (args.isEmpty()) {
-            channel.sendMessage(new EmbedBuilder().setColor(Color.red).setDescription(String.format("**\u274C Missing args**\n\n%sserverprefix [Prefix]", CommandListener.getPrefix(guild))).build()).queue();
+            channel.sendMessage(new EmbedBuilder().setColor(Color.red).setDescription(String.format("**\u274C Missing args**\n\n%sserverprefix [Prefix]", CommandListener.getPrefix(trigger.getGuild()))).build()).queue();
             return;
         }
         String prefix = args.replace(" ", "");
-        if (Settings.update(guild, PrefixSetting.class, prefix)) {
+        if (Settings.update(trigger.getGuild(), PrefixSetting.class, prefix)) {
             channel.sendMessage(Emoji.OK + " **Set the prefix to `" + prefix + "`**").queue();
         } else {
             channel.sendMessage(Emoji.X + " **Failed to update prefix!**").queue();

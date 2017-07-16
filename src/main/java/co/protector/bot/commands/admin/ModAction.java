@@ -16,9 +16,11 @@ public abstract class ModAction extends Command {
     abstract boolean doModAction(Guild guild, Member member, String args);
 
     @Override
-    public void execute(Guild guild, TextChannel channel, User invoker, Member member, Message message, String args) {
+    public void execute(Message trigger, String args) {
+        Guild guild = trigger.getGuild();
+        TextChannel channel = trigger.getTextChannel();
         if (getRequiredPermission() != null) {
-            if (!PermissionUtil.checkPermission(member, getRequiredPermission()) && !invoker.getId().equals(Config.owner_id)) {
+            if (!PermissionUtil.checkPermission(trigger.getMember(), getRequiredPermission()) && !trigger.getAuthor().getId().equals(Config.owner_id)) {
                 channel.sendMessage(Emoji.REDX + String.format(" It seems like you don't have permission to %s! Make sure that you are able to **%s**", getTrigger(), getRequiredPermission().getName())).queue();
                 return;
             }
@@ -40,7 +42,7 @@ public abstract class ModAction extends Command {
             channel.sendMessage(String.format("I'm not going to %s myself..!", getTrigger())).queue();
             return;
         }
-        if (targetUser.getIdLong() == invoker.getIdLong()) {
+        if (targetUser.getIdLong() == trigger.getAuthor().getIdLong()) {
             channel.sendMessage("Don't be so hard on yourself! \uD83D\uDC96 \u2728").queue();
             return;
         }
@@ -48,7 +50,7 @@ public abstract class ModAction extends Command {
             channel.sendMessage(String.format("I can't %s the user %s!", getTrigger(), targetUser.getName())).queue();
             return;
         }
-        if (!PermissionUtil.canInteract(guild.getMember(invoker), guild.getMember(targetUser))) {
+        if (!PermissionUtil.canInteract(guild.getMember(trigger.getAuthor()), guild.getMember(targetUser))) {
             channel.sendMessage(String.format("You are not allowed %s the user %s!", getTrigger(), targetUser.getName())).queue();
             return;
         }

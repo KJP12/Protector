@@ -1,8 +1,8 @@
 package co.protector.bot.core.settings.types;
 
-import co.protector.bot.util.Misc;
 import co.protector.bot.core.settings.IGuildSettingType;
 import co.protector.bot.util.Emoji;
+import co.protector.bot.util.Misc;
 import net.dv8tion.jda.core.entities.Guild;
 
 /**
