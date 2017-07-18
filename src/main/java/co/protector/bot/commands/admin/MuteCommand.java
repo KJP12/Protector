@@ -38,7 +38,7 @@ public class MuteCommand extends Command {
     private boolean canManageRole(Member author) {
         return PermissionUtil.checkPermission(author.getGuild().getSelfMember(), Permission.MANAGE_ROLES)
                 &&
-                author.getGuild().getSelfMember().canInteract(author);
+                PermissionUtil.canInteract(author.getGuild().getSelfMember(), author);
     }
 
     private boolean checks(Message trigger, Member muting) {
@@ -50,7 +50,7 @@ public class MuteCommand extends Command {
             trigger.getChannel().sendMessage(Emoji.REDX + " **You are not allowed to mute a user with a higher or equal role**").queue();
             return false;
         }
-        if (!canManageRole(trigger.getMember())) {
+        if (!canManageRole(muting)) {
             trigger.getChannel().sendMessage(Emoji.REDX + " **I cannot assign this user roles**").queue();
             return false;
         }
