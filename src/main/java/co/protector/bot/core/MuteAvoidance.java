@@ -7,7 +7,6 @@ import net.dv8tion.jda.core.events.channel.text.TextChannelCreateEvent;
 import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,11 +31,11 @@ public class MuteAvoidance extends ListenerAdapter {
     public void onGuildMemberJoin(GuildMemberJoinEvent event) {
         String guildid = event.getGuild().getId();
         Map<String, String> muted = Database.getMutedUsers(guildid);
-        if(muted.containsKey(event.getMember().getUser().getId())) {
+        if (muted.containsKey(event.getMember().getUser().getId())) {
             String id = Database.getMutedRole(guildid);
-            if(id != null) {
+            if (id != null) {
                 Role role = event.getGuild().getRoleById(id);
-                if(role != null) {
+                if (role != null) {
                     event.getGuild().getController().addRolesToMember(event.getMember(), role).queue();
                 }
             }

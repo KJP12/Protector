@@ -8,8 +8,6 @@ import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.utils.PermissionUtil;
 
-import java.util.List;
-
 /**
  * Created by Repulser
  * https://github.com/Repulser
@@ -62,7 +60,7 @@ public class UnmuteCommand extends Command {
             return;
         }
         User user = Misc.findUser(trigger.getTextChannel(), args);
-        if(user == null) {
+        if (user == null) {
             trigger.getChannel().sendMessage(Emoji.X + " **Could not find user**").queue();
             return;
         }

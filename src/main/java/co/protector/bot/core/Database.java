@@ -6,10 +6,7 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.UpdateOptions;
 import org.bson.Document;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static com.mongodb.client.model.Filters.eq;
@@ -37,7 +34,7 @@ public class Database {
     @SuppressWarnings("unchecked")
     public static Map<String, String> getMutedUsers(String id) {
         Map<String, String> users = (Map<String, String>) getDocument(id, "muted").get("users");
-        if(users == null) return new HashMap<>();
+        if (users == null) return new HashMap<>();
         return users;
     }
 
@@ -45,7 +42,7 @@ public class Database {
         Map<String, String> muted = getMutedUsers(id);
         muted.put(user, muter);
         saveConfigField("muted", new Document()
-        .append("users", muted), id);
+                .append("users", muted), id);
     }
 
     public static void removeMutedUser(String id, String user) {

@@ -9,8 +9,6 @@ import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.utils.PermissionUtil;
 import org.bson.Document;
 
-import java.util.List;
-
 /**
  * Created by Repulser
  * https://github.com/Repulser
@@ -48,7 +46,7 @@ public class MuteCommand extends Command {
             trigger.getChannel().sendMessage(Emoji.REDX + " **You require the `Kick Members` permission in order to mute**").queue();
             return false;
         }
-        if(!PermissionUtil.canInteract(trigger.getMember(), muting)) {
+        if (!PermissionUtil.canInteract(trigger.getMember(), muting)) {
             trigger.getChannel().sendMessage(Emoji.REDX + " **You are not allowed to mute a user with a higher or equal role**").queue();
             return false;
         }
@@ -67,13 +65,13 @@ public class MuteCommand extends Command {
             return;
         }
         User user = Misc.findUser(trigger.getTextChannel(), args);
-        if(user == null) {
+        if (user == null) {
             trigger.getChannel().sendMessage(Emoji.X + " **Could not find user**").queue();
             return;
         }
         Member muting = guild.getMember(user);
         if (!checks(trigger, muting)) return;
-        if(muting.getUser().getId().equals(trigger.getJDA().getSelfUser().getId())) {
+        if (muting.getUser().getId().equals(trigger.getJDA().getSelfUser().getId())) {
             trigger.getChannel().sendMessage(Emoji.EYES + " **Thats pretty rude!**").queue();
             return;
         }
