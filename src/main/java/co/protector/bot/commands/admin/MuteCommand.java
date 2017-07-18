@@ -38,7 +38,7 @@ public class MuteCommand extends Command {
     private boolean canManageRole(Member author) {
         return PermissionUtil.checkPermission(author.getGuild().getSelfMember(), Permission.MANAGE_ROLES)
                 &&
-                PermissionUtil.canInteract(author.getGuild().getSelfMember(), author);
+                author.getGuild().getSelfMember().canInteract(author);
     }
 
     private boolean checks(Message trigger, Member muting) {
