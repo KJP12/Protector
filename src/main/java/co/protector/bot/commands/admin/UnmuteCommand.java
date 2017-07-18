@@ -36,7 +36,7 @@ public class UnmuteCommand extends Command {
     private boolean canManageRole(Member author) {
         return PermissionUtil.checkPermission(author.getGuild().getSelfMember(), Permission.MANAGE_ROLES)
                 &&
-                PermissionUtil.canInteract(author, author.getGuild().getSelfMember());
+                PermissionUtil.canInteract(author.getGuild().getSelfMember(), author);
     }
 
     private boolean checks(Message trigger) {
