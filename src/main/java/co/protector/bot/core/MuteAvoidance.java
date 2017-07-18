@@ -8,6 +8,7 @@ import net.dv8tion.jda.core.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Repulser
@@ -30,8 +31,8 @@ public class MuteAvoidance extends ListenerAdapter {
     @Override
     public void onGuildMemberJoin(GuildMemberJoinEvent event) {
         String guildid = event.getGuild().getId();
-        List<String> muted = Database.getMutedUsers(guildid);
-        if(muted.contains(event.getMember().getUser().getId())) {
+        Map<String, String> muted = Database.getMutedUsers(guildid);
+        if(muted.containsKey(event.getMember().getUser().getId())) {
             String id = Database.getMutedRole(guildid);
             if(id != null) {
                 Role role = event.getGuild().getRoleById(id);

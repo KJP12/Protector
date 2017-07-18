@@ -8,7 +8,9 @@ import org.bson.Document;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.mongodb.client.model.Filters.eq;
 
@@ -33,21 +35,21 @@ public class Database {
     }
 
     @SuppressWarnings("unchecked")
-    public static List<String> getMutedUsers(String id) {
-        List<String> users = (List<String>) getDocument(id, "muted").get("users");
-        if(users == null) return new ArrayList<>();
+    public static Map<String, String> getMutedUsers(String id) {
+        Map<String, String> users = (Map<String, String>) getDocument(id, "muted").get("users");
+        if(users == null) return new HashMap<>();
         return users;
     }
 
-    public static void addMutedUser(String id, String user) {
-        List<String> muted = getMutedUsers(id);
-        muted.add(user);
+    public static void addMutedUser(String id, String user, String muter) {
+        Map<String, String> muted = getMutedUsers(id);
+        muted.put(user, muter);
         saveConfigField("muted", new Document()
         .append("users", muted), id);
     }
 
     public static void removeMutedUser(String id, String user) {
-        List<String> muted = getMutedUsers(id);
+        Map<String, String> muted = getMutedUsers(id);
         muted.remove(user);
         saveConfigField("muted", new Document()
                 .append("users", muted), id);

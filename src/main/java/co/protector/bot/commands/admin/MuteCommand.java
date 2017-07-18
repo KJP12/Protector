@@ -88,7 +88,7 @@ public class MuteCommand extends Command {
             trigger.getChannel().sendMessage(Emoji.WARN + " **Muted role not found, configuring.**").queue();
             Role role = createRole(guild);
             setMutedRole(role.getId(), guild.getId());
-            assignMutedRole(role, guild, trigger.getChannel(), muting);
+            assignMutedRole(role, guild, trigger.getChannel(), muting, trigger.getAuthor());
         } else {
             Role role = guild.getRoleById(id);
             if (role == null) {
@@ -96,13 +96,13 @@ public class MuteCommand extends Command {
                 role = createRole(guild);
                 setMutedRole(role.getId(), guild.getId());
             }
-            assignMutedRole(role, guild, trigger.getChannel(), muting);
+            assignMutedRole(role, guild, trigger.getChannel(), muting, trigger.getAuthor());
         }
     }
 
-    private void assignMutedRole(Role role, Guild guild, MessageChannel channel, Member member) {
+    private void assignMutedRole(Role role, Guild guild, MessageChannel channel, Member member, User muter) {
         guild.getController().addRolesToMember(member, role).queue();
-        Database.addMutedUser(guild.getId(), member.getUser().getId());
+        Database.addMutedUser(guild.getId(), member.getUser().getId(), muter.getId());
         channel.sendMessage(Emoji.GREEN_TICK +
                 " **Muted** `" + member.getUser().getName() + "#" + member.getUser().getDiscriminator() + "`").queue();
     }
