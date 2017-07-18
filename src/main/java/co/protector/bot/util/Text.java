@@ -7,7 +7,7 @@ public class Text {
 
     public static String paste(String input) {
         try {
-            return "https://hastebin.com/" + Unirest.post("https://hastebin.com/documents").body(input).asJson().getBody().getObject().getString("key");
+            return "https://feed-the-wump.us/" + Unirest.post("https://feed-the-wump.us/documents").body(input).asJson().getBody().getObject().getString("key");
         } catch (UnirestException e) {
             e.printStackTrace();
             return null;
