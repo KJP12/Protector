@@ -64,7 +64,7 @@ public class MuteListCommand extends Command {
                     .append(mutedMember.getNickname() != null ? " (" + mutedMember.getNickname() + ")" : "")
                     .append("`")
                     .append(" Muted by: `")
-                    .append(muterMember != null ? muterMember.getUser().getName() + "#" + mutedMember.getUser().getDiscriminator() : "Unknown")
+                    .append(muterMember != null ? muterMember.getUser().getName() + "#" + muterMember.getUser().getDiscriminator() : "Unknown")
                     .append(muterMember != null ? (muterMember.getNickname() != null ? " (" + muterMember.getNickname() + ")" : "") : "")
                     .append("`")
                     .append("\n\n");
