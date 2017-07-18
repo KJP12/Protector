@@ -68,10 +68,10 @@ public class MuteListCommand extends Command {
                     .append(muterMember != null ? (muterMember.getNickname() != null ? " (" + muterMember.getNickname() + ")" : "") : "")
                     .append("`")
                     .append("\n\n");
-            trigger.getChannel().sendMessage(
-                    new EmbedBuilder()
-                            .setDescription(description.toString())
-                            .build()).queue();
         }
+        trigger.getChannel().sendMessage(
+                new EmbedBuilder()
+                        .setDescription(description.toString())
+                        .build()).queue();
     }
 }
