@@ -75,7 +75,10 @@ public class MuteCommand extends Command {
             trigger.getChannel().sendMessage(Emoji.EYES + " **Thats pretty rude!**").queue();
             return;
         }
-
+        if (muting.getUser().getId().equals(trigger.getAuthor().getId())) {
+            trigger.getChannel().sendMessage("Don't be so hard on yourself! \uD83D\uDC96 \u2728").queue();
+            return;
+        }
         String id = Database.getMutedRole(guild.getId());
         if (muting.getRoles().stream().anyMatch(role -> role.getId().equals(id))) {
             trigger.getChannel().sendMessage(Emoji.WARN +

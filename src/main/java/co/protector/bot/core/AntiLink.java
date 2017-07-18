@@ -39,7 +39,7 @@ public class AntiLink extends ListenerAdapter {
         if (!content.contains("discord")) return;
         if (message.getAuthor().getId().equals(message.getJDA().getSelfUser().getId())) return;
         if (!enabled(message.getGuild())) return;
-//        if (ignoreMember(member)) return;
+        if (ignoreMember(message.getMember())) return;
         String cleanContent = cleanString(content);
         Matcher m = discordURL.matcher(cleanContent);
         if (m.find()) {
