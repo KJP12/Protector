@@ -59,11 +59,13 @@ public class MuteListCommand extends Command {
             if (mutedMember == null) break;
             description.append("`")
                     .append(mutedMember.getUser().getName())
-                    .append(mutedMember.getNickname() != null ? "[" + mutedMember.getNickname() + "]" : "")
+                    .append("#")
+                    .append(mutedMember.getUser().getDiscriminator())
+                    .append(mutedMember.getNickname() != null ? " (" + mutedMember.getNickname() + ")" : "")
                     .append("`")
                     .append(" Muted by: `")
-                    .append(muterMember != null ? muterMember.getUser().getName() : "Unknown")
-                    .append(muterMember != null ? (muterMember.getNickname() != null ? "[" + muterMember.getNickname() + "]" : "") : "")
+                    .append(muterMember != null ? muterMember.getUser().getName() + "#" + mutedMember.getUser().getDiscriminator() : "Unknown")
+                    .append(muterMember != null ? (muterMember.getNickname() != null ? " (" + muterMember.getNickname() + ")" : "") : "")
                     .append("`")
                     .append("\n\n");
             trigger.getChannel().sendMessage(
