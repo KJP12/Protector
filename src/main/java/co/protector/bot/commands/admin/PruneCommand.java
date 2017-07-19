@@ -40,7 +40,7 @@ public class PruneCommand extends Command {
 
     @Override
     public String getUsage() {
-        return "";
+        return "Future usage string";
     }
 
     private boolean checks(Message trigger) {
