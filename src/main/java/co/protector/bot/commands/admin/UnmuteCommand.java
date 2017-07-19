@@ -36,15 +36,15 @@ public class UnmuteCommand extends Command {
     private boolean canManageRole(Member author) {
         return PermissionUtil.checkPermission(author.getGuild().getSelfMember(), Permission.MANAGE_ROLES)
                 &&
-                PermissionUtil.canInteract(author, author.getGuild().getSelfMember());
+                PermissionUtil.canInteract(author.getGuild().getSelfMember(), author);
     }
 
-    private boolean checks(Message trigger) {
+    private boolean checks(Message trigger, Member target) {
         if (!PermissionUtil.checkPermission(trigger.getMember(), Permission.KICK_MEMBERS)) {
             trigger.getChannel().sendMessage(Emoji.REDX + " **You require the `Kick Members` permission in order to unmute**").queue();
             return false;
         }
-        if (!canManageRole(trigger.getMember())) {
+        if (!canManageRole(target)) {
             trigger.getChannel().sendMessage(Emoji.REDX + " **I cannot assign this user roles**").queue();
             return false;
         }
@@ -53,7 +53,6 @@ public class UnmuteCommand extends Command {
 
     @Override
     public void execute(Message trigger, String args) {
-        if (!checks(trigger)) return;
         Guild guild = trigger.getGuild();
         if (args.isEmpty()) {
             trigger.getChannel().sendMessage(Emoji.X + " **Who exactly should I unmute?**").queue();
@@ -65,6 +64,7 @@ public class UnmuteCommand extends Command {
             return;
         }
         Member target = guild.getMember(user);
+        if (!checks(trigger, target)) return;
         String id = Database.getMutedRole(guild.getId());
         if (id == null) {
             trigger.getChannel().sendMessage(Emoji.WARN +
