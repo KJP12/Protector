@@ -43,7 +43,7 @@ public abstract class Command {
      *
      * @return command usage
      */
-    public abstract String[] getUsage();
+    public abstract String getUsage();
 
     /**
      * run the command

@@ -38,10 +38,8 @@ public class BanCommand extends ModAction {
     }
 
     @Override
-    public String[] getUsage() {
-        return new String[]{
-                "ban @mention", "bans a user based on mention",
-                "ban name", "bans a user based on name"
-        };
+    public String getUsage() {
+        return "ban @mention" + " bans a user based on mention\n" +
+                "ban name" + " bans a user based on name";
     }
 }

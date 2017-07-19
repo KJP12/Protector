@@ -34,8 +34,8 @@ public class MuteListCommand extends Command {
     }
 
     @Override
-    public String[] getUsage() {
-        return new String[0];
+    public String getUsage() {
+        return "";
     }
 
     @Override

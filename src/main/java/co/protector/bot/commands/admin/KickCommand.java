@@ -32,10 +32,8 @@ public class KickCommand extends ModAction {
     }
 
     @Override
-    public String[] getUsage() {
-        return new String[]{
-                "kick @mention", "kicks a user based on mention",
-                "kick name", "kicks based on name"
-        };
+    public String getUsage() {
+        return "kick @mention" + " kicks a user based on mention\n" +
+                "kick name" + " kicks based on name";
     }
 }

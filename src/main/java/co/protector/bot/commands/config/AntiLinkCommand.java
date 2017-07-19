@@ -27,11 +27,9 @@ public class AntiLinkCommand extends Command {
     }
 
     @Override
-    public String[] getUsage() {
-        return new String[]{
-                "antilink", "toggles Anti Link",
-                "antilink on/off", "turns Anti Link on or off"
-        };
+    public String getUsage() {
+        return "antilink" + "toggles Anti Link\n" +
+                "antilink on/off" + " turns Anti Link on or off";
     }
 
 

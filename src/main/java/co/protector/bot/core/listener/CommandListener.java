@@ -6,7 +6,8 @@ import co.protector.bot.Main;
 import co.protector.bot.commands.CommandCategory;
 import co.protector.bot.core.Settings;
 import co.protector.bot.core.listener.command.Command;
-import net.dv8tion.jda.core.entities.*;
+import net.dv8tion.jda.core.entities.Guild;
+import net.dv8tion.jda.core.entities.Message;
 import org.reflections.Reflections;
 
 import java.lang.reflect.InvocationTargetException;
@@ -89,14 +90,12 @@ public class CommandListener {
     /**
      * Executes the command
      *
-     * @param guild   guild
-     * @param channel TextChannel
-     * @param author  invoker/author
-     * @param message the mesage
+     * @param trigger the mesage
      * @return successfully executed?
      */
-    public boolean execute(Guild guild, TextChannel channel, User author, Member member, Message message, String prefix) {
-        String[] split = message.getRawContent().split(" ", 2);
+    public boolean execute(Message trigger, String prefix) {
+        if (RateLimiter.checkIfRateLimited(trigger.getAuthor())) return false;
+        String[] split = trigger.getRawContent().split(" ", 2);
         if (split[0].length() <= prefix.length()) {
             return false;
         }
@@ -105,7 +104,7 @@ public class CommandListener {
         if (command == null) {
             return false;
         }
-        command.execute(message, split.length == 1 ? "" : split[1]);
+        command.execute(trigger, split.length == 1 ? "" : split[1]);
         return true;
     }
 }

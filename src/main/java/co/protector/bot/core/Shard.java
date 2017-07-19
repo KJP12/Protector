@@ -68,6 +68,6 @@ public class Shard extends ListenerAdapter {
             }
             return;
         }
-        commandExecutor.submit(() -> commandListener.execute(e.getGuild(), e.getChannel(), e.getAuthor(), e.getMember(), e.getMessage(), prefix));
+        commandExecutor.submit(() -> commandListener.execute(e.getMessage(), prefix));
     }
 }

@@ -33,10 +33,8 @@ public class TempBanCommand extends ModAction {
     }
 
     @Override
-    public String[] getUsage() {
-        return new String[]{
-                "tempban @mention", "kicks a user based on mention",
-                "tempban name", "kicks a user based on name"
-        };
+    public String getUsage() {
+        return "tempban @mention" + " kicks a user based on mention\n" +
+                "tempban name" + " kicks a user based on name";
     }
 }

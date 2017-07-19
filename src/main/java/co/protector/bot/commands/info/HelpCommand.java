@@ -34,11 +34,9 @@ public class HelpCommand extends Command {
     }
 
     @Override
-    public String[] getUsage() {
-        return new String[]{
-                "help", "full overview of all the commands",
-                "help <command>", "Info about a specific command"
-        };
+    public String getUsage() {
+        return "help" + " full overview of all the commands\n" +
+                "help <command>" + "Info about a specific command";
     }
 
     @Override

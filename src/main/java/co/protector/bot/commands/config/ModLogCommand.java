@@ -31,11 +31,10 @@ public class ModLogCommand extends Command {
     }
 
     @Override
-    public String[] getUsage() {
-        return new String[]{
-                "modlog #channel", "Sets the channel the Mod Log will go to",
-                "modlog off", "disables the Mod Log"
-        };
+    public String getUsage() {
+        return "modlog #channel" + " Sets the channel the Mod Log will go to\n" +
+                "modlog off" + " disables the Mod Log";
+
     }
 
     @Override
