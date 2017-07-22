@@ -106,8 +106,7 @@ public class CommandListener {
         }
         try {
             command.execute(trigger, split.length == 1 ? "" : split[1]);
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }

@@ -40,8 +40,7 @@ public class PruneCommand extends Command {
 
     @Override
     public String getUsage() {
-        return "`-prune` Prunes 100 messages\n\n" +
-                "`-prune <Number>` Prunes x messages\n\n" +
+        return "`-prune <Number>` Prunes x messages\n\n" +
                 "`-prune @User [Number]` Prunes messages from a certain user with optional number argument\n\n" +
                 "`-prune has <Text> [Number]` Prunes if a message contains certain text, optional number argument\n\n" +
                 "`-prune embeds [Number]` Prunes embeds with optional number argument\n\n" +
@@ -109,7 +108,7 @@ public class PruneCommand extends Command {
         if (!checks(trigger)) return;
         TextChannel channel = trigger.getTextChannel();
         if (args.isEmpty()) {
-            deleteMessages(trigger, message -> true, channel, 100);
+            sendUsage(channel);
             return;
         }
         String[] parsedArgs = args.split("\\s+");
