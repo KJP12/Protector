@@ -104,7 +104,13 @@ public class CommandListener {
         if (command == null) {
             return false;
         }
-        command.execute(trigger, split.length == 1 ? "" : split[1]);
+        try {
+            command.execute(trigger, split.length == 1 ? "" : split[1]);
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+            return false;
+        }
         return true;
     }
 }

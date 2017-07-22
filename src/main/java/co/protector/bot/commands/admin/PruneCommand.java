@@ -40,7 +40,14 @@ public class PruneCommand extends Command {
 
     @Override
     public String getUsage() {
-        return "Future usage string";
+        return "`-prune` Prunes 100 messages\n\n" +
+                "`-prune <Number>` Prunes x messages\n\n" +
+                "`-prune @User [Number]` Prunes messages from a certain user with optional number argument\n\n" +
+                "`-prune has <Text> [Number]` Prunes if a message contains certain text, optional number argument\n\n" +
+                "`-prune embeds [Number]` Prunes embeds with optional number argument\n\n" +
+                "`-prune attachments [Number]` Prunes all attachments (Including images) with an optional number argument\n\n" +
+                "`-prune bot [Number]` Prunes all messages sent by bots with optional number argument\n\n" +
+                "`-prune after <Message ID>` Prunes all messages sent after a certain message (Excluding the message)";
     }
 
     private boolean checks(Message trigger) {
@@ -71,10 +78,17 @@ public class PruneCommand extends Command {
                     List<Message> deleting = messages.stream().filter(
                             message -> condition.test(message) && !messageBeforeTwoWeeks(message) && !message.isPinned()
                     ).collect(Collectors.toList());
-                    if (deleting.size() < 2) {
+                    if (deleting.isEmpty()) {
                         channel.sendMessage(Emoji.X + " **No messages that match the criteria were found**").queue(
                                 message -> message.delete().queueAfter(5, TimeUnit.SECONDS)
                         );
+                        return;
+                    }
+                    if (deleting.size() < 2) {
+                        deleting.get(0).delete().queue((Void) ->
+                                channel.sendMessage(Emoji.GREEN_TICK + " **Pruned `" + deleting.size() + "` message" + (deleting.size() != 1 ? "s" : "") + "**").queue(
+                                        message -> message.delete().queueAfter(5, TimeUnit.SECONDS)
+                                ));
                         return;
                     }
                     //Delete and send message
@@ -115,7 +129,6 @@ public class PruneCommand extends Command {
             }
             deleteMessages(trigger, message -> message.getAuthor() == user, channel, past);
         } else if (parsedArgs[0].equalsIgnoreCase("has")) {
-            int past = 100;
             if (parsedArgs.length < 2) {
                 sendUsage(channel);
                 return;
@@ -143,14 +156,8 @@ public class PruneCommand extends Command {
                 sendUsage(channel);
                 return;
             }
-            channel.getMessageById(parsedArgs[1]).queue(after -> {
-                deleteMessages(trigger, message -> message.getCreationTime().isAfter(after.getCreationTime()), channel, 100);
-            }, (Throwable) -> channel.sendMessage(Emoji.X + " **Could not find message for provided ID**").queue());
+            channel.getMessageById(parsedArgs[1]).queue(after -> deleteMessages(trigger, message -> message.getCreationTime().isAfter(after.getCreationTime()), channel, 100), (Throwable) -> channel.sendMessage(Emoji.X + " **Could not find message for provided ID**").queue());
         } else if (parsedArgs[0].equalsIgnoreCase("bot")) {
-            if (parsedArgs.length < 1) {
-                sendUsage(channel);
-                return;
-            }
             int past = 100;
             if (parsedArgs.length > 1) {
                 if (NumberUtils.isCreatable(parsedArgs[1])) {
