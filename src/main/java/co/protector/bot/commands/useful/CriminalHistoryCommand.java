@@ -40,8 +40,8 @@ public class CriminalHistoryCommand extends Command {
         } else {
             checking = trigger.getAuthor();
         }
-        int bans = UserData.getBans(checking.getId());
-        int links = UserData.getLinks(checking.getId());
+        long bans = UserData.getBans(checking.getId());
+        long links = UserData.getLinks(checking.getId());
         String user = checking.getName() + "#" + checking.getDiscriminator();
         trigger.getChannel().sendMessage(new EmbedBuilder()
                 .setColor(Color.ORANGE)

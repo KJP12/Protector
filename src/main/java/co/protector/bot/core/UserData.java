@@ -4,16 +4,16 @@ import org.bson.Document;
 
 public class UserData {
 
-    public static int getBans(String id) {
-        Object bans = Database.getDocument(id, "users").get("bans");
+    public static long getBans(String id) {
+        Long bans = Database.getDocument(id, "users").getLong("bans");
         if (bans == null) return 0;
-        return (int) bans;
+        return bans;
     }
 
-    public static int getLinks(String id) {
-        Object links = Database.getDocument(id, "users").get("links");
+    public static long getLinks(String id) {
+        Long links = Database.getDocument(id, "users").getLong("links");
         if (links == null) return 0;
-        return (int) links;
+        return links;
     }
 
     public static void onBan(String id) {
