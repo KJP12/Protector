@@ -56,7 +56,7 @@ public class MuteListCommand extends Command {
             String muter = entry.getValue();
             Member mutedMember = guild.getMemberById(mute);
             Member muterMember = guild.getMemberById(muter);
-            if (mutedMember == null) break;
+            if (mutedMember == null) continue;
             description.append("`")
                     .append(mutedMember.getUser().getName())
                     .append("#")
