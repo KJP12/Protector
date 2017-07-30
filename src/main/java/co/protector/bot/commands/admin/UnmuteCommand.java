@@ -40,8 +40,8 @@ public class UnmuteCommand extends Command {
     }
 
     private boolean checks(Message trigger, Member target) {
-        if (!PermissionUtil.checkPermission(trigger.getMember(), Permission.KICK_MEMBERS)) {
-            trigger.getChannel().sendMessage(Emoji.REDX + " **You require the `Kick Members` permission in order to unmute**").queue();
+        if (!PermissionUtil.checkPermission(trigger.getMember(), Permission.VOICE_MUTE_OTHERS)) {
+            trigger.getChannel().sendMessage(Emoji.REDX + " **You require the `Mute Members` permission in order to unmute**").queue();
             return false;
         }
         if (!canManageRole(target)) {

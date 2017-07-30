@@ -42,8 +42,8 @@ public class MuteCommand extends Command {
     }
 
     private boolean checks(Message trigger, Member muting) {
-        if (!PermissionUtil.checkPermission(trigger.getMember(), Permission.KICK_MEMBERS)) {
-            trigger.getChannel().sendMessage(Emoji.REDX + " **You require the `Kick Members` permission in order to mute**").queue();
+        if (!PermissionUtil.checkPermission(trigger.getMember(), Permission.VOICE_MUTE_OTHERS)) {
+            trigger.getChannel().sendMessage(Emoji.REDX + " **You require the `Mute Members` permission in order to mute**").queue();
             return false;
         }
         if (!PermissionUtil.canInteract(trigger.getMember(), muting)) {

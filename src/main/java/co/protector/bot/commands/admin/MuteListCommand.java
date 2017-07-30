@@ -40,8 +40,8 @@ public class MuteListCommand extends Command {
 
     @Override
     public void execute(Message trigger, String args) {
-        if (!PermissionUtil.checkPermission(trigger.getMember(), Permission.KICK_MEMBERS)) {
-            trigger.getChannel().sendMessage(Emoji.REDX + " **You require the `Kick Members` permission in order to view the mute list**").queue();
+        if (!PermissionUtil.checkPermission(trigger.getMember(), Permission.VOICE_MUTE_OTHERS)) {
+            trigger.getChannel().sendMessage(Emoji.REDX + " **You require the `Mute Members` permission in order to view the mute list**").queue();
             return;
         }
         Guild guild = trigger.getGuild();
