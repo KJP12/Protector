@@ -39,7 +39,7 @@ public class StatsCommand extends Command {
         String channelCount = String.valueOf(Arrays.stream(Main.bot.getShards()).mapToLong(shard -> shard.getJda().getTextChannels().size()).sum());
         int Threads = Thread.getAllStackTraces().keySet().size();
         channel.sendMessage(new EmbedBuilder()
-                .setAuthor("ModBot Stats", null, channel.getJDA().getSelfUser().getAvatarUrl())
+                .setAuthor("Protector Stats", null, channel.getJDA().getSelfUser().getAvatarUrl())
                 .addField("Server Count", serversCount, true)
                 .addField("Total Members", MemberCount, true)
                 .addField("Text Channels", channelCount, true)

@@ -47,9 +47,9 @@ public class HelpCommand extends Command {
         Guild guild = trigger.getGuild();
         TextChannel channel = trigger.getTextChannel();
         trigger.getAuthor().openPrivateChannel().queue(privateChannel -> privateChannel.sendMessage(new EmbedBuilder()
-                .setAuthor("AutoMod Commands!", null, channel.getJDA().getSelfUser().getAvatarUrl())
+                .setAuthor("Protector Commands!", null, channel.getJDA().getSelfUser().getAvatarUrl())
                 .setDescription(String.format(fullHelpText, CommandListener.getPrefix(guild)))
-                .setFooter("AutoMod ready at your command!", null)
+                .setFooter("Protector ready at your command!", null)
                 .build()).queue());
         if (PermissionUtil.checkPermission(channel, guild.getSelfMember(), Permission.MESSAGE_ADD_REACTION)) {
             trigger.addReaction(Emoji.MAILBOX_WITH_MAIL).queue();
@@ -77,7 +77,7 @@ public class HelpCommand extends Command {
             }
             sb.append(category.getEmote()).append(" **").append(category.getCategoryName()).append("**\n");
             for (String trigger : set) {
-                sb.append(String.format("[%s%s](https://github.com/repulser/automod) - %s\n", "%1$s", trigger, CommandListener.commands.get(trigger).getDescription()));
+                sb.append(String.format("[%s%s](https://github.com/Repulser/Protector) - %s\n", "%1$s", trigger, CommandListener.commands.get(trigger).getDescription()));
             }
             sb.append("\n");
         }

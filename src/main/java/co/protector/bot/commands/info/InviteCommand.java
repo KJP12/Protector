@@ -5,7 +5,7 @@ import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Message;
 
 public class InviteCommand extends Command {
-    private static final String embedDescription = "[Add me](https://discord.io/protector)\n[Official Discord](https://discord.io/botz)\n[Github](https://github.com/repulser/automod)\n";
+    private static final String embedDescription = "[Add me](https://discord.io/protector)\n[Official Discord](https://discord.io/botz)\n[Github](https://github.com/Repulser/Protector)\n";
 
     @Override
     public String getTrigger() {
