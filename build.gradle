@@ -19,13 +19,13 @@ repositories {
 
 dependencies {
     //JDA
-    compile group: 'net.dv8tion', name: 'JDA', version: '3.3.0_265'
+    compile group: 'net.dv8tion', name: 'JDA', version: '3.3.1_281'
     //Configuration builder
     compile group: 'com.github.kaaz', name: 'configurationbuilder', version: 'afbc25a5d2'
     //Unirest
     compile group: 'com.mashape.unirest', name: 'unirest-java', version: '1.4.9'
     //MongoDB
-    compile group: 'org.mongodb', name: 'mongodb-driver', version: '3.4.2'
+    compile group: 'org.mongodb', name: 'mongodb-driver', version: '3.5.0'
     //Logback
     compile group: 'ch.qos.logback', name: 'logback-core', version: '1.2.3'
     //Groovy for eval

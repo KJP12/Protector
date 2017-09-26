@@ -1,12 +1,106 @@
-<configuration>
+<configuration debug="false">
 
+    <!--STDOUT-->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
         <encoder>
-            <pattern>{%thread} [%level] %msg%n</pattern>
+            <pattern>[ %-5level] [%logger{0}] %msg%n</pattern>
         </encoder>
     </appender>
 
-    <root level="info">
-        <appender-ref ref="STDOUT" />
+    <!--File logger-->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <file>logs/protector.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/protector-%d{yyyyMMdd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>[%date{HH:mm:ss}] [ %-5level] [%logger{0}] %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!--Debug level logs-->
+    <appender name="DEBUG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/debug.log</file>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/debug.%d{yyyyMMdd}.log.gz</fileNamePattern>
+            <maxHistory>5</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>[%d] [ %-5level] [%thread] %logger{35}: %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!--Error level logs-->
+    <appender name="ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/error.log</file>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/error.%d{yyyyMMdd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>[%thread] [%logger{0}] %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!--JDA error log-->
+    <appender name="JDAError" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/jdaerror.log</file>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/jdaerror-%d{yyyyMMdd}.log</fileNamePattern>
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>[%d] [ %-5level] [%thread] %logger{35}: %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!--JDA debug log-->
+    <appender name="JDADebug" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/jda.log</file>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/jda-%d{yyyyMMdd}.log</fileNamePattern>
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>[%d] [ %-5level] [%thread] %logger{35}: %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!--JDA error logger-->
+    <logger name="net.dv8tion.jda.core.JDA" level="ERROR" additivity="true">
+        <appender-ref ref="JDAError"/>
+    </logger>
+
+    <!--JDA debug logger-->
+    <logger name="net.dv8tion.jda.core.JDA" level="DEBUG" additivity="true">
+        <appender-ref ref="JDADebug"/>
+    </logger>
+
+    <!--Root logger-->
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="DEBUG"/>
+        <appender-ref ref="ERROR"/>
     </root>
+
 </configuration>
