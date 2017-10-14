@@ -27,7 +27,7 @@ public class MuteCommand extends Command {
 
     @Override
     public String getDescription() {
-        return "Mutes a user, disabling there ability to speak in the server";
+        return "Mutes a user, disabling their ability to speak in the server";
     }
 
     @Override
