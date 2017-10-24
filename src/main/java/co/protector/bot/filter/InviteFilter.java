@@ -8,7 +8,7 @@ public class InviteFilter extends RegexFilter {
 
     @Override
     public Pattern getPattern() {
-        return Pattern.compile("discord(?:(\\.(?:me|io|gg)|sites\\.com)\\/.{0,4}|app\\.com.{1,4}(?:invite|oauth2).{0,5}\\/)\\w+");
+        return Pattern.compile("di?sco?rd(?:(\\.(?:me|io|gg|li)|sites\\.com)\\/.{0,4}|app\\.com.{1,4}(?:invite|oauth2).{0,5}\\/)\\w+");
     }
 
     @Override
