@@ -19,7 +19,7 @@ repositories {
 
 dependencies {
     //JDA
-    compile group: 'net.dv8tion', name: 'JDA', version: '3.3.1_281'
+    compile group: 'net.dv8tion', name: 'JDA', version: '3.3.1_297'
     //Configuration builder
     compile group: 'com.github.kaaz', name: 'configurationbuilder', version: 'afbc25a5d2'
     //Unirest
@@ -37,7 +37,7 @@ dependencies {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '4.0.1'
+    gradleVersion = '4.2.1'
 }
 
 tasks.withType(JavaCompile) {

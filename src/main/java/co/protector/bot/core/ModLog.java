@@ -49,7 +49,8 @@ public class ModLog extends ListenerAdapter {
     }
 
     private String getUser(Member member) {
-        return member.getEffectiveName().replace("@", "@\u200b") + "#" + member.getUser().getDiscriminator();
+        if(member == null) return "Unknown member";
+        return member.getUser().getName().replace("@", "@\u200b") + "#" + member.getUser().getDiscriminator();
     }
 
     private Message getFromCache(String id) {
@@ -111,6 +112,7 @@ public class ModLog extends ListenerAdapter {
         if (after == null) return;
         Message before = getFromCache(after.getId());
         if (before == null) return;
+        if(!after.getRawContent().equals(before.getRawContent())) return;
         String time = getTime();
         Member author = before.getGuild().getMember(before.getAuthor());
         String user = getUser(author);
