@@ -112,7 +112,7 @@ public class ModLog extends ListenerAdapter {
         if (after == null) return;
         Message before = getFromCache(after.getId());
         if (before == null) return;
-        if(!after.getRawContent().equals(before.getRawContent())) return;
+        if(after.getRawContent().equals(before.getRawContent())) return;
         String time = getTime();
         Member author = before.getGuild().getMember(before.getAuthor());
         String user = getUser(author);
