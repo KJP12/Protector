@@ -116,8 +116,11 @@ public class MuteCommand extends Command {
 
     private Role createRole(Guild guild) {
         Role role = guild.getController().createRole().setName("Muted").complete();
-        guild.getTextChannels().forEach(textChannel ->
-                textChannel.createPermissionOverride(role).setDeny(Permission.MESSAGE_WRITE).queue());
+        guild.getTextChannels().forEach(textChannel -> {
+            if (PermissionUtil.checkPermission(textChannel, guild.getSelfMember(), Permission.MANAGE_PERMISSIONS)) {
+                textChannel.createPermissionOverride(role).setDeny(Permission.MESSAGE_WRITE).queue();
+            }
+        });
         return role;
     }
 
