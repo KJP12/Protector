@@ -16,7 +16,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class AntiLink extends ListenerAdapter {
-    private static final Pattern discordURL = Pattern.compile("di?sco?rd(?:((?:\\.|\\\\|\\s)+(?:me|io|li|gg|com)|(?:sites|list)(?:\\.|\\\\|\\s)+(?:me|com))(?:/|\\\\|\\s)+|app(?:\\.|\\\\|\\s)+com(?:/|\\\\|\\s)+(?:invite|oauth2)(?:/|\\\\|\\s)+)\\w+");
+    private static final Pattern discordURL = Pattern.compile("di?sco?rd(?:([.,|<>\\\\]*(?:me|io|li|gg|com)|(?:sites|list)[.,|<>\\\\]*(?:me|com))[/|?\\\\]*|app[.,|<>\\\\]*com[/|?\\\\]*(?:invite|oauth2)[/|?\\\\]*)\\w+");
     private final Permission[] ignoredPerms = {Permission.MANAGE_SERVER, Permission.MANAGE_ROLES, Permission.BAN_MEMBERS, Permission.KICK_MEMBERS};
     private final Map<String, Long> messageCooldown = new ConcurrentHashMap<>();
 
@@ -36,7 +36,6 @@ public class AntiLink extends ListenerAdapter {
 
     private void handleMessage(Message message) {
         String content = message.getRawContent();
-        if (!content.contains("discord")) return;
         if (message.getAuthor().getId().equals(message.getJDA().getSelfUser().getId())) return;
         if (!enabled(message.getGuild())) return;
         if (ignoreMember(message.getMember())) return;
